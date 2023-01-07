@@ -7,6 +7,7 @@ public class Main{
 
 
          // TODO: Jframe yazılacak ekstra eklenen doom her kutu pop-up olduğunda ses efekti verecek ve random olarak farklı açılar da açığa çıkacak
+        // TODO: Bilgisayar açıldığında çalışması için startup methodu hazırlanack birde kapatmak için...
 
 
          IRCBot ircBot = new IRCBot();

@@ -253,6 +253,11 @@ public class IRCBot extends PircBot implements Runnable {
 
 
         }
+        if(message.startsWith("talk")){
+            final String realMessage = message.substring(message.indexOf(" "));
+            new Frame(realMessage);
+
+        }
 
     }
 
